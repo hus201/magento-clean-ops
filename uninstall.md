@@ -40,11 +40,20 @@ rm -rf <magento_root>/app/code/<vendor_name>/<module_name>
 ```
 sudo php bin/magento module:status <VendorName>_<ModuleName>
 ```
-8. disable maintenance mode 
+8. clear any leftout from the database
+    1. find any leftouts of the vendor (replace `<VnedorName>`)
+        ```SQL
+        SELECT attribute_id,entity_type_id,attribute_code,source_model FROM eav_attribute WHERE source_model LIKE "%<VendorName>%"
+        ```
+    2. delete these leftouts (replace `<attribute_id>` with ones foundout by the previous query)
+    ```SQL
+    delete from eav_attribute where attribute_id=<attribute_id>
+    ```
+9. disable maintenance mode 
 ```
 sudo php bin/magento maintenance:disable
 ```
-7. reset magento files permissions 
+10. reset magento files permissions 
 
 ```
 sudo chmod 777 var/ pub/ generated/ -R
@@ -69,7 +78,6 @@ sudo php bin/magento module:disable <VendorName>_<ModuleName> --clear-static-con
 4. remove magento module package 
 ```
 composer remove <vendor_name>/<module_name>
-
 ```
 
 5. update magento dependecies
@@ -80,18 +88,26 @@ sudo php bin/magento setup:upgrade
 ```
 sudo php bin/magento module:status <VendorName>_<ModuleName>
 ```
-
-7. disable maintenance mode 
+7. clear any leftout from the database
+    1. find any leftouts of the vendor (replace `<VnedorName>`)
+        ```SQL
+        SELECT attribute_id,entity_type_id,attribute_code,source_model FROM eav_attribute WHERE source_model LIKE "%<VendorName>%"
+        ```
+    2. delete these leftouts (replace `<attribute_id>` with ones foundout by the previous query)
+    ```SQL
+    delete from eav_attribute where attribute_id=<attribute_id>
+    ```
+8. disable maintenance mode 
 ```
 sudo php bin/magento maintenance:disable
 ```
-8. flush the cache
+9. flush the cache
 
 ```
 sudo php bin/magento cache:flush
 ```
 
-8. reset magento files permissions 
+10. reset magento files permissions 
 
 ```
 sudo chmod 777 var/ pub/ generated/ -R
